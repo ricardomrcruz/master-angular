@@ -8,9 +8,13 @@
   </div>
 
   <ng-template #showItems>
-    <ul class="form-check" *ngFor="let item of items">
-      <li class="form-check-label">
-        <input type="text" type="checkbox"> {{item.wishText}}
+    <ul class="wish-list">
+      <li *ngFor="let item of items">
+        <div class="form-check">
+          <label class="form-check-label">
+            <input type="text" type="checkbox" [checked]="item.isComplete"> {{item.wishText}}
+          </label>
+        </div>
       </li>
     </ul>
   </ng-template>
