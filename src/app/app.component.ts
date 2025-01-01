@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { WishItem } from '../shared/models/whishItem';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
+  standalone: false,
 })
 export class AppComponent {
   items: WishItem[] | never = [
@@ -15,9 +13,18 @@ export class AppComponent {
     new WishItem('To Get Some coffee', true),
     new WishItem('Find grass that cuts itself'),
   ];
+
+  newWishText = '';
+
   title = 'heyyyyyyy';
 
-  toggleItem(e: any) {
-    console.log(e);
+  addNewWish() {
+    //todo: add wish to items array
+    //clear the textbook
+  }
+
+  toggleItem(item: WishItem) {
+    item.isComplete = !item.isComplete;
+    console.log(item);
   }
 }
