@@ -16,4 +16,8 @@ export class AppComponent {
     new WishItem('Find grass that cuts itself'),
   ];
   title = 'heyyyyyyy';
+
+  toggleItem(e: any) {
+    console.log(e);
+  }
 }
