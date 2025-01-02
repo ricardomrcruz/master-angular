@@ -8,10 +8,10 @@ import { WishItem } from '../shared/models/whishItem';
   standalone: false,
 })
 export class AppComponent {
-  items: WishItem[] | never = [
-    new WishItem('To Learn Angular'),
-    new WishItem('To Get Some coffee', true),
-    new WishItem('Find grass that cuts itself'),
+  items: WishItem[] = [
+    // new WishItem('To Learn Angular'),
+    // new WishItem('To Get Some coffee', true),
+    // new WishItem('Find grass that cuts itself'),
   ];
 
   newWishText = '';
@@ -19,8 +19,8 @@ export class AppComponent {
   title = 'heyyyyyyy';
 
   addNewWish() {
-    //todo: add wish to items array
-    //clear the textbook
+    this.items.push(new WishItem(this.newWishText));
+    this.newWishText = '';
   }
 
   toggleItem(item: WishItem) {
