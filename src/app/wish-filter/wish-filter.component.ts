@@ -16,6 +16,10 @@ const filters = [
   templateUrl: './wish-filter.component.html',
   styleUrl: './wish-filter.component.css',
 })
+
+// this component handles filtering tru two-way binding [(filter)="filter"]
+// receives filter function from parent and emits new filter when dropdown changes
+// parent then applies selected filter to wish items array
 export class WishFilterComponent implements OnInit {
   @Input() filter: any;
   @Output() filterChange = new EventEmitter<any>();

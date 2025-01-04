@@ -1,10 +1,12 @@
 <div class="container">
   <add-wish-form (addWish)="items.push($event)"></add-wish-form>
 
+  <!-- filter is declared in the parent and inputted in the wish-filter component -->
   <div class="row mt-3">
     <wish-filter [(filter)]="filter"></wish-filter>
   </div>
 
+  <!-- the wish list takes the filter updated in the wish-filter component  -->
   <div class="row mt-3">
     <wish-list [wishes]="items.filter(filter)"></wish-list>
   </div>
