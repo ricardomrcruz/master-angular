@@ -10,7 +10,7 @@ import { WishService } from './wish.service';
   standalone: false,
 })
 export class AppComponent implements OnInit {
-  items!: WishItem[];
+  items: WishItem[] = [];
 
   filter = (item: WishItem) => item;
 
