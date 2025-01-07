@@ -5,7 +5,7 @@ import {
   HttpParams,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { WishItem } from '../shared/models/whishItem';
+import { WishItem } from '../../shared/models/whishItem';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, Output, EventEmitter, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { WishItem } from '../../shared/models/whishItem';
+import { WishItem } from '../../../shared/models/whishItem';
 import { OnInit } from '@angular/core';
 
 const filters = [

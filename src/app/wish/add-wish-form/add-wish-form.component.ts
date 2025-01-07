@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Output, EventEmitter } from '@angular/core';
-import { WishItem } from '../../shared/models/whishItem';
+import { WishItem } from '../../../shared/models/whishItem';
 import { FormsModule } from '@angular/forms';
 
 @Component({
