@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-contact',
@@ -9,17 +9,21 @@ import { ReactiveFormsModule, FormControl } from '@angular/forms';
   standalone: true,
 })
 export class ContactComponent implements OnInit {
-  ngOnInit(): void {}
-
   constructor() {}
 
-  senderNameControl = new FormControl('');
-  senderEmailControl = new FormControl('');
-  senderMessageControl = new FormControl('');
+  ngOnInit(): void {}
+
+  contactForm = new FormGroup({
+    senderName: new FormControl(''),
+    senderEmail: new FormControl(''),
+    senderMessage: new FormControl(''),
+  });
 
   submitForm() {
-    if (this.senderNameControl.dirty) {
-      alert('you changed the name field.');
-    }
+    console.log(this.contactForm.value); // you can also test the validity with .valid
+
+    // if (this.senderNameControl.dirty) {
+    //   alert('you changed the name field.');
+    // }
   }
 }

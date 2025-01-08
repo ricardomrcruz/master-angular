@@ -7,6 +7,7 @@ import { ContactComponent } from './contact/contact.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   standalone: true,
-  imports: [WishComponent, ContactComponent],
+  // imports: [WishComponent, ContactComponent],
+  imports: [ContactComponent],
 })
 export class AppComponent {}
