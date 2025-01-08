@@ -14,6 +14,8 @@
             *ngIf="contactForm.get('senderEmail')?.invalid && (contactForm.get('senderEmail')?.dirty || contactForm.get('senderEmail')?.touched)">
             <small *ngIf="contactForm.get('senderEmail')?.hasError('required')">This field is required.</small>
             <small *ngIf="contactForm.get('senderEmail')?.hasError('email')">Please enter a valid email.</small>
+            <small *ngIf="contactForm.get('senderEmail')?.hasError('invalidEmailDomain')">The email provider is not
+                allowed.</small>
         </div>
     </div>
     <div class="mb-3">

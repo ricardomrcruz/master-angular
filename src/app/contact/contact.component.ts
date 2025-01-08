@@ -6,6 +6,9 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { createInvalidEmailDomainValidator } from './invalidEmailDomain';
+
+const invalidEmailDomain = createInvalidEmailDomainValidator(['gmail.com', 'yahoo.com', 'hotmail.com'])
 
 @Component({
   selector: 'app-contact',
@@ -15,13 +18,17 @@ import {
   standalone: true,
 })
 export class ContactComponent implements OnInit {
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   contactForm = new FormGroup({
     senderName: new FormControl('', Validators.required),
-    senderEmail: new FormControl('', [Validators.required, Validators.email]),
+    senderEmail: new FormControl('', [
+      Validators.required,
+      Validators.email,
+      invalidEmailDomain,
+    ]),
     senderMessage: new FormControl('', [
       Validators.required,
       Validators.minLength(10),
