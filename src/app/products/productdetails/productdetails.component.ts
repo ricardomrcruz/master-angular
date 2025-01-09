@@ -17,6 +17,8 @@ export class ProductdetailsComponent implements OnInit {
 
   constructor(private store: ProductsService, private route: ActivatedRoute) { }
 
+  //ParamMaps it's a observable that contains the route params 
+  // defined in routes.ts in this case /:id
   ngOnInit(): void {
     this.route.paramMap.subscribe((params: ParamMap) => {
       let id = params.get('id');
