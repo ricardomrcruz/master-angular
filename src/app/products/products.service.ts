@@ -5,6 +5,7 @@ import { of } from 'rxjs';
   providedIn: 'root'
 })
 export class ProductsService {
+
   private data: any[] = [
     { id: 1, name: 'Guitar', price: 1000 },
     { id: 2, name: 'Piano', price: 2000 },
@@ -17,6 +18,9 @@ export class ProductsService {
     return of(this.data);
   }
 
+  getProduct(id: number) {
+    return of(this.data.find(p => p.id === id));
+  }
 
 
 }
