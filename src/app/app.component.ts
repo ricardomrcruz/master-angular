@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { WishComponent } from './wish/wish.component';
 import { ContactComponent } from './contact/contact.component';
 import { Router, RouterOutlet, RouterLink, } from '@angular/router';
+import { ProductsListComponent } from './products/products-list/products-list.component';
 
 @Component({
   selector: 'app-root',
@@ -15,10 +16,11 @@ import { Router, RouterOutlet, RouterLink, } from '@angular/router';
 export class AppComponent {
 
   constructor(private router: Router) { }
-  title = 'router-app';
 
+  title = 'router-app';
 
   goToContact() {
     this.router.navigate(['contact'])
   }
+
 }
