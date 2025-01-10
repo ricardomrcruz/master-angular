@@ -1,5 +1,9 @@
-
+nav{
+    padding-top: 2rem;
+}
 
 nav a{
-    padding: 0 5px;
+    padding: 0 1rem 0 0 ;
+    color: black;
+    font-size: 1.2rem;
 }

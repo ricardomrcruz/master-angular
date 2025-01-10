@@ -1,0 +1,60 @@
+.title {
+    padding-top: 3rem;
+}
+
+
+
+.upload-container {
+    padding: 20px;
+    width: 100%;
+    max-width: 60rem;
+    margin: 0 auto;
+    /* Add a max-width */
+    font-size: small;
+}
+
+
+.upload-area {
+    max-width: 400px;
+    margin: 3rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 150px;
+    border: 2px dashed black;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-area:hover {
+    border-color: #6495ed;
+    color: #6495ed;
+}
+
+.upload-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-align: center;
+
+}
+
+.upload-content svg {
+    margin-bottom: 8px;
+}
+
+.file-info {
+    font-size: 0.875rem;
+
+}
+
+.video-player {
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 20px;
+
+}

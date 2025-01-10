@@ -1,16 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { WishComponent } from './wish/wish.component';
-import { ContactComponent } from './contact/contact.component';
-import { Router, RouterOutlet, RouterLink, } from '@angular/router';
-import { ProductsListComponent } from './products/products-list/products-list.component';
+import { Component } from '@angular/core';
+import { Router, RouterOutlet, RouterLink } from '@angular/router';
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   standalone: true,
-  // imports: [WishComponent, ContactComponent], part I
-  // imports: [ContactComponent], part II
   imports: [RouterOutlet, RouterLink]
 })
 export class AppComponent {
