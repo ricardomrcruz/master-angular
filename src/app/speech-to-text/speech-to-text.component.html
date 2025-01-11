@@ -2,7 +2,6 @@
 <p>Insert a video to display real time text captioning recognition.</p>
 
 
-
 <div class="upload-container">
     <label *ngIf="!videoUrl" for="video-upload" class="upload-area">
         <div class="upload-content">
@@ -18,6 +17,16 @@
         <input type="file" id="video-upload" accept="video/*" (change)="onFileSelected($event)" hidden>
     </label>
 
-    <video #videoPlayer [src]="videoUrl" *ngIf="videoUrl" controls autoplay class="video-player">
-    </video>
+    <div class="loading-container" *ngIf="isLoading">
+        <div class="loading-spinner"></div>
+        <p>ai magic is brewing...</p>
+    </div>
+
+    <ng-container *ngIf="!isLoading">
+        <video #videoPlayer [src]="videoUrl" *ngIf="transcriptText" controls autoplay class="video-player">
+        </video>
+        <div *ngIf="transcriptText" class="transcript-area">
+            <p>{{transcriptText}}</p>
+        </div>
+    </ng-container>
 </div>
