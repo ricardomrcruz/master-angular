@@ -1,11 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild, ElementRef, Inject, Optional } from '@angular/core';
-import { AssemblyAI } from "assemblyai";
+import { AssemblyAI, TranscriptWord } from "assemblyai";
 
-interface Word {
-  text: string;
-  start: number;
-  end: number;
+interface Word extends TranscriptWord {
   highlighted?: boolean;
 }
 
@@ -25,7 +22,7 @@ export class SpeechToTextComponent {
   // property to store video
   videoUrl: string | null = null;
   isLoading: boolean = false;
-  words: Word[] | null | undefined = [];
+  words: Word[] = [];
   currentTime: number = 0;
 
   constructor(@Optional() @Inject('API_KEY') private apiKey?: string) {
@@ -53,30 +50,40 @@ export class SpeechToTextComponent {
       this.isLoading = true;
 
       if (this.client) {
-
         try {
-          // convert the video file to base64 or appropriate format
+
           const data: any = {
-            audio: file, // Pass the file directly
+            audio: file,
             speech_model: "best",
             language_detection: true,
-            word_timestamps: true
           }
 
-          console.log('6. File converted, sending to AssemblyAI');
-          // send file to assemblyAI
+          console.log('Sending transcript request with config:', data);
+
           const transcript = await this.client.transcripts.transcribe(data);
 
-          this.words = transcript.words;
-          console.log(transcript.text);
+          if (transcript && transcript.words) {
+            this.words = transcript.words;
+          }
+
+          console.log('transcript', transcript);
+
+
         } catch (error) {
           console.error('Error transcribing video:', error);
         } finally {
           this.isLoading = false;
         }
       }
-
     }
+  }
+
+  onTimeUpdate() {
+    this.currentTime = this.videoPlayer.nativeElement.currentTime * 1000;
+  }
+
+  isWordActive(word: Word): boolean {
+    return this.currentTime >= word.start && this.currentTime <= word.end;
   }
 
 

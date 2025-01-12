@@ -1,5 +1,8 @@
-<h2 class="title">Speech To Text</h2>
-<p>Insert a video to display real time text captioning recognition.</p>
+<div class="title">
+    <h2>Speech To Text</h2>
+    <p>Insert a video to display real time text captioning recognition.</p>
+</div>
+
 
 
 <div class="upload-container">
@@ -18,15 +21,19 @@
     </label>
 
     <div class="loading-container" *ngIf="isLoading">
-        <div class="loading-spinner"></div>
-        <p>ai magic is brewing...</p>
+        <div class="loader"></div>
+        <p>AI magic is brewing...</p>
     </div>
 
     <ng-container *ngIf="!isLoading">
-        <video #videoPlayer [src]="videoUrl" *ngIf="transcriptText" controls autoplay class="video-player">
+        <video #videoPlayer [src]="videoUrl" *ngIf="words?.length" controls autoplay class="video-player"
+            (timeupdate)="onTimeUpdate()">
         </video>
-        <div *ngIf="transcriptText" class="transcript-area">
-            <p>{{transcriptText}}</p>
+        <div *ngIf="words?.length" class="transcript-area">
+            <span *ngFor="let word of words" [class.highlight-word]="isWordActive(word)">
+                <p>{{word.text}}</p>
+            </span>
+
         </div>
     </ng-container>
 </div>

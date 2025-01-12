@@ -10,7 +10,7 @@ describe('SpeechToTextComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SpeechToTextComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(SpeechToTextComponent);
     component = fixture.componentInstance;
@@ -21,3 +21,5 @@ describe('SpeechToTextComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+
