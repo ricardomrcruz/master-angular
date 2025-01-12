@@ -4,9 +4,9 @@
 }
 
 .upload-container {
-    padding: 20px;
+    padding: 0 20px;
     width: 100%;
-    max-width: 60rem;
+    max-width: 55rem;
     margin: 0;
     font-size: small;
 }
@@ -14,7 +14,7 @@
 
 .upload-area {
     max-width: 400px;
-    margin: 3rem auto;
+    margin: 6rem auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,7 +52,6 @@
 .video-player {
     width: 100%;
     border-radius: 7px;
-    margin-top: 20px;
 }
 
 
@@ -60,43 +59,79 @@
     font-family: Helvetica, "Helvetica Neue", Arial, sans-serif !important;
 }
 
-.transcript-area{
-    padding: 0 5px;
-    margin-top: 1.4rem;
-    font-size:1.2rem;
+.reader-wrapper {
+    /* Fixed height container */
+    height: 200px;
+    width: 100%;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    border-radius: 4px;
+
+}
+
+.scroll-container {
+    height: 100%;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* Hide scrollbar for IE, Edge and Firefox */
+    -ms-overflow-style: none;
+    /* IE and Edge */
+    scrollbar-width: none;
+    /* Firefox */
+}
+
+
+.transcript-area {
+    padding: 10px 4px 0 4px;
+    font-size: 1.2rem;
     justify-content: space-evenly;
-    color:gray;
+    color: gray;
     display: flex;
     flex-wrap: wrap;
     max-width: 100%;
-    gap: 7px;
-    line-height: 0.6;
+    gap: 4px;
+    line-height: 0.5;
+    position: relative;
+    overflow: visible;
 }
 
 .highlight-word {
     color: white;
     transform: translateY(-7px);
     line-height: normal;
+    position: relative;
+    z-index: 3;  /* Ensure highlighted word is above other words */
 }
 
 .highlight-word p {
     color: inherit;
     margin: 0;
-    background: none;
     background-color: #6495ED;
-    padding: 2px 1px;
+    padding: 1px 1px;
     border-radius: 3px;
+    opacity: 0.7;
+    transition: background-color 0.3s ease,
+        color 0.3s ease,
+        box-shadow 0.3s ease;
+    display: inline-block;
 }
 
-/* loading indicator */
 
+
+/* LOADING CONTAINER ANIMATION */
 .loading-container {
     display: flex;
     flex-direction: column;
-    align-items: center; 
+    align-items: center;
     justify-content: center;
     padding: 2rem;
-    padding-top: 4rem;
+    padding-top: 8rem;
     width: 100%;
 }
 
@@ -121,8 +156,8 @@
     content: "";
     flex: 1;
     clip-path: polygon(var(--_d) 0, 100% 0, 100% calc(100% - var(--_d)), calc(100% - var(--_d)) 100%, 0 100%, 0 var(--_d));
-    background:conic-gradient(from -90deg at calc(100% - var(--_d)) var(--_d),
-    #6495ED 135deg, #4F74BA 0 270deg, #7BA6FF 0);
+    background: conic-gradient(from -90deg at calc(100% - var(--_d)) var(--_d),
+            #6495ED 135deg, #4F74BA 0 270deg, #7BA6FF 0);
     animation: l5 1.2s infinite;
 }
 

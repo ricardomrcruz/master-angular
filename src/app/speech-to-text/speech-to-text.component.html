@@ -29,11 +29,14 @@
         <video #videoPlayer [src]="videoUrl" *ngIf="words?.length" controls autoplay class="video-player"
             (timeupdate)="onTimeUpdate()">
         </video>
-        <div *ngIf="words?.length" class="transcript-area">
-            <span *ngFor="let word of words" [class.highlight-word]="isWordActive(word)">
-                <p>{{word.text}}</p>
-            </span>
-
+        <div *ngIf="words?.length" class="reader-wrapper">
+            <div class="scroll-container">
+                <div *ngIf="words?.length" class="transcript-area">
+                    <span *ngFor="let word of words" [class.highlight-word]="checkWordsAndScroll(word)" class="word">
+                        <p>{{word.text}}</p>
+                    </span>
+                </div>
+            </div>
         </div>
     </ng-container>
 </div>

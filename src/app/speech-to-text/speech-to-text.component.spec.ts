@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SpeechToTextComponent } from './speech-to-text.component';
 
 describe('SpeechToTextComponent', () => {
