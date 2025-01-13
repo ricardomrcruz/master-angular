@@ -6,29 +6,116 @@
 
 
 <div class="upload-container">
-    <label *ngIf="!videoUrl" for="video-upload" class="upload-area">
-        <div class="upload-content">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="17 8 12 3 7 8" />
-                <line x1="12" y1="3" x2="12" y2="15" />
-            </svg>
-            <span>Drag and drop your video here or click to browse</span>
-            <span class="file-info">MP4, WebM, or Ogg video files</span>
-        </div>
-        <input type="file" id="video-upload" accept="video/*" (change)="onFileSelected($event)" hidden>
-    </label>
+    <div class="upload-section">
+        <label *ngIf="!videoUrl" for="video-upload" class="upload-area">
+            <div class="upload-content">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                </svg>
+                <span>Drag and drop your video here or click to browse</span>
+                <span class="file-info">MP4, WebM, or Ogg video files</span>
+            </div>
+            <input type="file" id="video-upload" accept="video/*" (change)="onFileSelected($event)" hidden>
+        </label>
+    </div>
 
     <div class="loading-container" *ngIf="isLoading">
         <div class="loader"></div>
         <p>AI magic is brewing...</p>
     </div>
 
-    <ng-container *ngIf="!isLoading">
-        <video #videoPlayer [src]="videoUrl" *ngIf="words?.length" controls autoplay class="video-player"
-            (timeupdate)="onTimeUpdate()">
-        </video>
+    <ng-container class="left-section" *ngIf="!isLoading">
+        <div class="flex">
+            <div>
+                <video #videoPlayer [src]="videoUrl" *ngIf="words?.length" controls autoplay class="video-player"
+                    (timeupdate)="onTimeUpdate()">
+                </video>
+            </div>
+            <div>
+                <!-- insert in here -->
+                <div class="analysis-container">
+                    <div class="analysis-section mb-6">
+                        <h3 class="text-lg font-bold mb-3">Content Safety Analysis</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <ng-container *ngIf="contentSafety?.content_safety_labels?.summary">
+                                <div *ngFor="let item of getContentSafetyItems()"
+                                    class="bg-white p-3 rounded-lg shadow-sm border">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-medium">{{ formatLabel(item.label) }}</span>
+                                        <span [ngClass]="{
+                                                'bg-red-100 text-red-700': item.score > 0.7,
+                                                'bg-yellow-100 text-yellow-700': item.score > 0.4 && item.score <= 0.7,
+                                                'bg-green-100 text-green-700': item.score <= 0.4
+                                            }" class="px-2 py-1 rounded text-xs font-medium">
+                                            {{ (item.score * 100).toFixed(0) }}%
+                                        </span>
+                                    </div>
+                                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
+                                        <div [style.width.%]="item.score * 100" [ngClass]="{
+                                                    'bg-red-500': item.score > 0.7,
+                                                    'bg-yellow-500': item.score > 0.4 && item.score <= 0.7,
+                                                    'bg-green-500': item.score <= 0.4
+                                                 }" class="h-full transition-all duration-300">
+                                        </div>
+                                    </div>
+                                </div>
+                            </ng-container>
+                        </div>
+                    </div>
+
+                    <!-- Sentiment Timeline -->
+                    <div class="analysis-section mb-6">
+                        <h3 class="text-lg font-bold mb-3">Sentiment Analysis</h3>
+                        <div class="sentiment-timeline max-h-96 overflow-y-auto">
+                            <div *ngFor="let sentiment of sentimentAnalysis" [ngClass]="{
+                                        'border-l-4': true,
+                                        'border-red-500': sentiment.sentiment === 'NEGATIVE',
+                                        'border-green-500': sentiment.sentiment === 'POSITIVE',
+                                        'border-gray-500': sentiment.sentiment === 'NEUTRAL',
+                                        'bg-blue-50': currentTime >= sentiment.start && currentTime <= sentiment.end
+                                    }" class="p-3 mb-2 transition-all duration-300">
+                                <div class="flex justify-between items-start mb-1">
+                                    <span [ngClass]="{
+                                            'text-red-600': sentiment.sentiment === 'NEGATIVE',
+                                            'text-green-600': sentiment.sentiment === 'POSITIVE',
+                                            'text-gray-600': sentiment.sentiment === 'NEUTRAL'
+                                        }" class="text-sm font-semibold">
+                                        {{ sentiment.sentiment }}
+                                    </span>
+                                    <span class="text-xs bg-gray-100 rounded px-2 py-1">
+                                        {{ (sentiment.confidence * 100).toFixed(0) }}%
+                                    </span>
+                                </div>
+                                <p class="text-sm text-gray-700">{{ sentiment.text }}</p>
+                                <div class="text-xs text-gray-500 mt-1">
+                                    {{ (sentiment.start / 1000).toFixed(1) }}s - {{ (sentiment.end / 1000).toFixed(1)
+                                    }}s
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Entity Summary Section -->
+                    <div class="analysis-section mt-4">
+                        <h3 class="text-lg font-bold mb-2">Entity Summary</h3>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div *ngFor="let type of getUniqueEntityTypes()"
+                                class="entity-type-card p-3 bg-gray-50 rounded-lg">
+                                <h4 class="text-sm font-semibold text-gray-700 mb-2">{{ formatEntityType(type) }}</h4>
+                                <div class="text-xs text-gray-600">
+                                    <div *ngFor="let entity of getEntitiesByType(type)" class="mb-1">
+                                        {{ entity.text }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div *ngIf="words?.length" class="reader-wrapper">
             <div class="scroll-container">
                 <div *ngIf="words?.length" class="transcript-area">
@@ -38,5 +125,7 @@
                 </div>
             </div>
         </div>
+
+
     </ng-container>
 </div>

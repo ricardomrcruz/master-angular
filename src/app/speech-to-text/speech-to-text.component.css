@@ -3,15 +3,25 @@
     margin-left: 20px;
 }
 
+.flex{
+    display: flex;
+}
+
 .upload-container {
     padding: 0 20px;
     width: 100%;
-    max-width: 55rem;
+    
     margin: 0;
     font-size: small;
 }
 
+.left-section{
+    max-width: 55rem;
+}
 
+.upload-section{
+    max-width: 55rem;
+}
 .upload-area {
     max-width: 400px;
     margin: 6rem auto;
@@ -25,6 +35,7 @@
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.3s ease;
+    
 }
 
 .upload-area:hover {
@@ -122,6 +133,22 @@
     display: inline-block;
 }
 
+.analysis-container {
+    padding: 1rem;
+    max-height: 600px;
+    overflow-y: auto;
+    border-left: 1px solid #e5e7eb;
+    width: 400px;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 
 
 /* LOADING CONTAINER ANIMATION */

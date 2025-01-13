@@ -12,6 +12,17 @@ interface Word extends TranscriptWord {
   highlighted?: boolean;
 }
 
+interface ContentSafety {
+  summary: { [key: string]: number };
+  severity_score_summary: { [key: string]: { [key: string]: number } };
+  results: Array<{
+    text: string;
+    labels: Array<{ label: string; confidence: number; severity: number }>;
+    timestamp: { start: number; end: number };
+  }>;
+}
+
+
 @Component({
   selector: 'app-speech-to-text',
   imports: [CommonModule],
@@ -28,6 +39,14 @@ export class SpeechToTextComponent {
   isLoading: boolean = false;
   words: Word[] = [];
   currentTime: number = 0;
+
+  contentSafety: any = null;
+  entities: any[] = [];
+  chapters: any[] = [];
+  highlights: any[] = [];
+  sentimentAnalysis: any[] = [];
+
+
 
   constructor(@Optional() @Inject('API_KEY') private apiKey?: string) {
     console.log('api key is :', this.apiKey);
@@ -55,25 +74,10 @@ export class SpeechToTextComponent {
             audio: file,
             speech_model: 'best',
             language_detection: true,
-            iab_categories: true,
-            auto_chapters: true,
-            content_safety: true,
-            auto_highlights: true,
-            sentiment_analysis: true,
+            content_safety: true,         // Keep content safety without censoring
+            sentiment_analysis: true,     // Keep sentiment analysis
             entity_detection: true,
-            redact_pii: true,
-            dual_channel: true,
-            filter_profanity: true,
-            redact_pii_policies: [
-              "medical_condition",
-              "email_address",
-              "phone_number",
-              "banking_information",
-              "credit_card_number",
-              "credit_card_cvv",
-              "date_of_birth",
-              "person_name"
-            ]
+            iab_categories: true
           };
 
           console.log('Sending transcript request with config:', data);
@@ -81,6 +85,17 @@ export class SpeechToTextComponent {
 
           if (transcript && transcript.words) {
             this.words = transcript.words;
+            this.entities = transcript.entities || [];
+
+
+            this.sentimentAnalysis = transcript.sentiment_analysis_results || [];
+            this.contentSafety = {
+              content_safety_labels: {
+                summary: transcript.content_safety_labels?.summary || {},
+                severity_score_summary: transcript.content_safety_labels?.severity_score_summary || {}
+              }
+            };
+
           }
 
           console.log('transcript', transcript);
@@ -109,10 +124,7 @@ export class SpeechToTextComponent {
 
     const previousElement =
       currentElement?.previousElementSibling as HTMLElement;
-    if (
-      currentElement &&
-      previousElement &&
-      currentElement.offsetTop !== previousElement.offsetTop
+    if (currentElement && previousElement && currentElement.offsetTop !== previousElement.offsetTop
     ) {
       currentElement.scrollIntoView({ behavior: 'smooth' });
     }
@@ -125,5 +137,42 @@ export class SpeechToTextComponent {
       this.checkLineBreakAndScroll(word);
     }
     return isActive;
+  }
+
+
+
+  // ENTITIES
+  getUniqueEntityTypes(): string[] {
+    return Array.from(new Set(this.entities.map(entity => entity.entity_type)));
+  }
+
+  getEntitiesByType(type: string): any[] {
+    return this.entities.filter(entity => entity.entity_type === type);
+  }
+
+  formatEntityType(type: string): string {
+    return type
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
+  // CONTENT SAFETY
+  getContentSafetyItems(): Array<{ label: string, score: number }> {
+    const summary = this.contentSafety?.content_safety_labels?.summary;
+    if (!summary) return [];
+
+    return Object.entries(summary).map(([label, score]) => ({
+      label,
+      score: score as number
+    }));
+  }
+
+  // Helper method to format labels
+  formatLabel(label: string): string {
+    return label
+      .split('_')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
   }
 }
