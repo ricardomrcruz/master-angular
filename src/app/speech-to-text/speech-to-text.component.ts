@@ -22,6 +22,22 @@ interface ContentSafety {
   }>;
 }
 
+interface IabCategory {
+  status: string;
+  results: Array<{
+    text: string;
+    labels?: Array<{  // Make labels optional with ?
+      label: string;
+      relevance: number;
+    }>;
+    timestamp?: {     // Make timestamp optional with ?
+      start: number;
+      end: number;
+    };
+  }>;
+  summary: { [key: string]: number };
+}
+
 
 @Component({
   selector: 'app-speech-to-text',
@@ -45,6 +61,7 @@ export class SpeechToTextComponent {
   chapters: any[] = [];
   highlights: any[] = [];
   sentimentAnalysis: any[] = [];
+  iabCategories: IabCategory | null = null;
 
 
 
@@ -70,22 +87,43 @@ export class SpeechToTextComponent {
 
       if (this.client) {
         try {
+
+          // Step 1: Upload the file first
+          console.log('Starting upload at:', new Date().toISOString());
+          const uploadURL = await this.client.files.upload(file);
+          console.log('Upload completed at:', new Date().toISOString());
+          console.log('Upload URL:', uploadURL);
+
+
+
+
+
           const data: any = {
-            audio: file,
+            audio: uploadURL,
             speech_model: 'best',
             language_detection: true,
             content_safety: true,         // Keep content safety without censoring
             sentiment_analysis: true,     // Keep sentiment analysis
             entity_detection: true,
-            iab_categories: true
+            iab_categories: true,
           };
+
+          console.log('Starting request at:', new Date().toISOString());
 
           console.log('Sending transcript request with config:', data);
           const transcript = await this.client.transcripts.transcribe(data);
+          console.log('Response received at:', new Date().toISOString());
+
+          // Debug logs for specific properties
+          console.log('IAB Categories Result:', transcript.iab_categories_result);
+          console.log('IAB Categories Status:', transcript.iab_categories_result?.status);
+          console.log('IAB Categories Summary:', transcript.iab_categories_result?.summary);
 
           if (transcript && transcript.words) {
             this.words = transcript.words;
             this.entities = transcript.entities || [];
+
+            this.iabCategories = transcript.iab_categories_result || null;
 
 
             this.sentimentAnalysis = transcript.sentiment_analysis_results || [];
@@ -96,11 +134,18 @@ export class SpeechToTextComponent {
               }
             };
 
+            console.log('Component IAB Categories after assignment:', this.iabCategories);
+
           }
 
           console.log('transcript', transcript);
         } catch (error) {
           console.error('Error transcribing video:', error);
+          if (error instanceof Error) {
+            console.error('Error name:', error.name);
+            console.error('Error message:', error.message);
+            console.error('Error stack:', error.stack);
+          }
         } finally {
           this.isLoading = false;
         }
@@ -174,5 +219,27 @@ export class SpeechToTextComponent {
       .split('_')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
+  }
+
+  // TOPICS
+  getTopicItems(): Array<{ topic: string, relevance: number }> {
+    const summary = this.iabCategories?.summary;
+    if (!summary) return [];
+
+    return Object.entries(summary)
+      .map(([topic, relevance]) => ({
+        topic,
+        relevance: relevance as number
+      }))
+      .sort((a, b) => b.relevance - a.relevance);
+  }
+
+  // Add this method to format topic labels
+  formatTopicLabel(topic: string): string {
+    return topic.split('>').map(part =>
+      part.split(/(?=[A-Z])/)
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+    ).join(' > ');
   }
 }
