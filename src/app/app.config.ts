@@ -3,6 +3,8 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { EventService } from '../shared/services/EventService';
+import { environment } from '../environments/environment';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     {
       provide: 'API_KEY',
-      useValue: process.env['API_KEY']
+      useValue: environment.API_KEY
     }
   ],
 };
