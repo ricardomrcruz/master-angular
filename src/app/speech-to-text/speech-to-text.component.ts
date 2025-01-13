@@ -55,6 +55,25 @@ export class SpeechToTextComponent {
             audio: file,
             speech_model: 'best',
             language_detection: true,
+            iab_categories: true,
+            auto_chapters: true,
+            content_safety: true,
+            auto_highlights: true,
+            sentiment_analysis: true,
+            entity_detection: true,
+            redact_pii: true,
+            dual_channel: true,
+            filter_profanity: true,
+            redact_pii_policies: [
+              "medical_condition",
+              "email_address",
+              "phone_number",
+              "banking_information",
+              "credit_card_number",
+              "credit_card_cvv",
+              "date_of_birth",
+              "person_name"
+            ]
           };
 
           console.log('Sending transcript request with config:', data);
