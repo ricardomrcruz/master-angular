@@ -26,38 +26,63 @@
         <p>AI magic is brewing...</p>
     </div>
 
-    <ng-container class="left-section" *ngIf="!isLoading">
-        <div class="flex">
-            <div>
+    <ng-container class="left-section " *ngIf="!isLoading">
+        <div class="flex justify-between">
+            <div class="left">
                 <video #videoPlayer [src]="videoUrl" *ngIf="words?.length" controls autoplay class="video-player"
                     (timeupdate)="onTimeUpdate()">
                 </video>
+                <div *ngIf="words?.length" class="reader-wrapper">
+                    <div class="scroll-container">
+                        <div *ngIf="words?.length" class="transcript-area">
+                            <span *ngFor="let word of words" [class.highlight-word]="checkWordsAndScroll(word)"
+                                class="word">
+                                <p>{{word.text}}</p>
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <!-- insert in here -->
+            <div class="central-line"></div>
+            <div class="right">
+                <div *ngIf="words?.length" class="confidence-meter">
+                    <div class="confidence-display">
+                        <div class="confidence-title">
+                            Confidence Level
+                        </div>
+                        <div>
+                            <span class="confidence-emoji"
+                                [innerHTML]="getConfidenceEmoji(getCurrentWordConfidence())"></span>
+                            <span class="confidence-percentage"> {{ getCurrentWordConfidence() | number:'1.0-0'
+                                }}%</span>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="analysis-container">
-                    <div class="analysis-section mb-6">
-                        <h3 class="text-lg font-bold mb-3">Content Safety Analysis</h3>
-                        <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <h3 class="helvetica">Content Safety Analysis</h3>
+                        <div class=" p-0">
                             <ng-container *ngIf="contentSafety?.content_safety_labels?.summary">
-                                <div *ngFor="let item of getContentSafetyItems()"
-                                    class="bg-white p-3 rounded-lg shadow-sm border">
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="text-sm font-medium">{{ formatLabel(item.label) }}</span>
-                                        <span [ngClass]="{
-                                                'bg-red-100 text-red-700': item.score > 0.7,
-                                                'bg-yellow-100 text-yellow-700': item.score > 0.4 && item.score <= 0.7,
-                                                'bg-green-100 text-green-700': item.score <= 0.4
-                                            }" class="px-2 py-1 rounded text-xs font-medium">
+                                <div *ngFor="let item of getContentSafetyItems()" class="mb-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="fw-medium">{{ formatLabel(item.label) }}</span>
+                                        <span class="badge rounded-pill px-3 py-2" [ngClass]="{
+                                                'bg-danger': item.score > 0.7,
+                                                'bg-warning text-dark': item.score > 0.4 && item.score <= 0.7,
+                                                'bg-success': item.score <= 0.4
+                                            }">
                                             {{ (item.score * 100).toFixed(0) }}%
                                         </span>
                                     </div>
-                                    <div class="h-2 bg-gray-100 rounded-full overflow-hidden">
-                                        <div [style.width.%]="item.score * 100" [ngClass]="{
-                                                    'bg-red-500': item.score > 0.7,
-                                                    'bg-yellow-500': item.score > 0.4 && item.score <= 0.7,
-                                                    'bg-green-500': item.score <= 0.4
-                                                }" class="h-full transition-all duration-300">
+                                    <div class="progress" style="height: 8px;">
+                                        <div class="progress-bar" [style.width.%]="item.score * 100" [ngClass]="{
+                                                'bg-danger': item.score > 0.7,
+                                                'bg-warning': item.score > 0.4 && item.score <= 0.7,
+                                                'bg-success': item.score <= 0.4
+                                             }" role="progressbar" [attr.aria-valuenow]="item.score * 100"
+                                            aria-valuemin="0" aria-valuemax="100">
                                         </div>
                                     </div>
                                 </div>
@@ -90,7 +115,8 @@
                                 </div>
                                 <p class="text-sm text-gray-700">{{ sentiment.text }}</p>
                                 <div class="text-xs text-gray-500 mt-1">
-                                    {{ (sentiment.start / 1000).toFixed(1) }}s - {{ (sentiment.end / 1000).toFixed(1)
+                                    {{ (sentiment.start / 1000).toFixed(1) }}s - {{ (sentiment.end /
+                                    1000).toFixed(1)
                                     }}s
                                 </div>
                             </div>
@@ -103,7 +129,8 @@
                         <div class="grid grid-cols-2 gap-2">
                             <div *ngFor="let type of getUniqueEntityTypes()"
                                 class="entity-type-card p-3 bg-gray-50 rounded-lg">
-                                <h4 class="text-sm font-semibold text-gray-700 mb-2">{{ formatEntityType(type) }}</h4>
+                                <h4 class="text-sm font-semibold text-gray-700 mb-2">{{ formatEntityType(type) }}
+                                </h4>
                                 <div class="text-xs text-gray-600">
                                     <div *ngFor="let entity of getEntitiesByType(type)" class="mb-1">
                                         {{ entity.text }}
@@ -122,7 +149,8 @@
                                 <div *ngFor="let result of iabCategories!.results" class="rounded-lg border p-3"
                                     [class.bg-blue-50]="result.timestamp && currentTime >= result.timestamp.start && currentTime <= result.timestamp.end">
                                     <div *ngIf="result.timestamp" class="text-sm text-gray-600 mb-1">
-                                        {{ (result.timestamp.start / 1000).toFixed(1) }}s - {{ (result.timestamp.end /
+                                        {{ (result.timestamp.start / 1000).toFixed(1) }}s - {{ (result.timestamp.end
+                                        /
                                         1000).toFixed(1) }}s
                                     </div>
                                     <p class="text-sm text-gray-700 mb-2">{{ result.text }}</p>
@@ -161,15 +189,7 @@
                 </div>
             </div>
         </div>
-        <div *ngIf="words?.length" class="reader-wrapper">
-            <div class="scroll-container">
-                <div *ngIf="words?.length" class="transcript-area">
-                    <span *ngFor="let word of words" [class.highlight-word]="checkWordsAndScroll(word)" class="word">
-                        <p>{{word.text}}</p>
-                    </span>
-                </div>
-            </div>
-        </div>
+
 
     </ng-container>
 </div>

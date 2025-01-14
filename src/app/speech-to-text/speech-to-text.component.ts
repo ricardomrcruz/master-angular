@@ -242,4 +242,19 @@ export class SpeechToTextComponent {
         .join(' ')
     ).join(' > ');
   }
+
+
+  getCurrentWordConfidence(): number {
+    const currentWord = this.words.find(word =>
+      this.currentTime >= word.start && this.currentTime <= word.end
+    );
+    return currentWord ? currentWord.confidence * 100 : 0;
+  }
+
+  getConfidenceEmoji(confidence: number): string {
+    if (confidence >= 80) return '😊';
+    if (confidence >= 60) return '🙂';
+    if (confidence >= 45) return '😐';
+    return '😟';
+  }
 }
