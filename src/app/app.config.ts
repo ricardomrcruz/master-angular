@@ -4,6 +4,7 @@ import { routes } from './app.routes';
 import { provideHttpClient } from '@angular/common/http';
 import { EventService } from '../shared/services/EventService';
 import { environment } from '../environments/environment';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 
 export const appConfig: ApplicationConfig = {
@@ -15,6 +16,6 @@ export const appConfig: ApplicationConfig = {
     {
       provide: 'API_KEY',
       useValue: environment.API_KEY
-    }
+    }, provideAnimationsAsync()
   ],
 };
