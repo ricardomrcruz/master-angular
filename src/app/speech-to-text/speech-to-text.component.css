@@ -654,6 +654,14 @@
 
 
 /* LOADING CONTAINER ANIMATION */
+
+::ng-deep .loading-charger {
+  height: 2px !important;  
+  color: #6495ed;
+  
+}
+
+
 .loading-container {
     display: flex;
     flex-direction: column;
@@ -665,7 +673,7 @@
 }
 
 .loading-container p {
-    color: #3b82f6;
+    color: #6495ed;
     margin-top: 6px;
     font-size: 1rem;
     padding-top: 1rem;
@@ -692,7 +700,7 @@
     background: conic-gradient(from -90deg at calc(100% - var(--_d)) var(--_d),
             #3b82f6 135deg,
             #60a5fa 0 270deg,
-            #dbeafe 0);
+            #b0d0fa 0);
     animation: l5 1.2s infinite;
 }
 
