@@ -5,8 +5,12 @@ nav {
     padding-right: 3rem;
     padding-left: 4.2rem;
     padding-bottom: 1.5rem;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-    width: calc(100% + 6rem); 
+    max-width: 100%; 
+}
+
+.nav-border{
+    height: 1px;
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 nav a {

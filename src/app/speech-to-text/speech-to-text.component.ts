@@ -7,6 +7,7 @@ import {
   Optional,
 } from '@angular/core';
 import { AssemblyAI, TranscriptWord } from 'assemblyai';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 interface Word extends TranscriptWord {
   highlighted?: boolean;
@@ -41,7 +42,7 @@ interface IabCategory {
 
 @Component({
   selector: 'app-speech-to-text',
-  imports: [CommonModule],
+  imports: [CommonModule, MatProgressBarModule],
   templateUrl: './speech-to-text.component.html',
   styleUrl: './speech-to-text.component.css',
   standalone: true,
