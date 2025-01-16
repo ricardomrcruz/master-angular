@@ -253,9 +253,12 @@ export class SpeechToTextComponent {
   }
 
   getConfidenceEmoji(confidence: number): string {
-    if (confidence >= 80) return '😊';
-    if (confidence >= 60) return '🙂';
-    if (confidence >= 45) return '😐';
-    return '😟';
+    if (confidence >= 80) return '😏'; // Focused/precise
+    if (confidence >= 60) return '🤔'; // Thoughtful/analytical
+    if (confidence >= 45) return '😕'; // Slightly concerned
+    if (confidence >= 30) return '😟'; // Worried
+    if (confidence >= 15) return '😰'; // Very concerned
+    if (confidence >= 5) return '😱';  // Distressed
+    return '😑';  // Critical attention needed
   }
 }
