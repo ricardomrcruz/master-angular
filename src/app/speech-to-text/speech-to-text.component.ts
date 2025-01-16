@@ -262,3 +262,6 @@ export class SpeechToTextComponent {
     return '😑';  // Critical attention needed
   }
 }
+
+
+
