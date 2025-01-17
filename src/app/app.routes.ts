@@ -7,12 +7,14 @@ import { ContactComponent } from './contact/contact.component';
 import { ProductsListComponent } from './products/products-list/products-list.component';
 import { ProductdetailsComponent } from './products/productdetails/productdetails.component';
 import { SpeechToTextComponent } from './speech-to-text/speech-to-text.component';
+import { WizardComponent } from './wizard/wizard.component';
 
 
 export const routes: Routes = [
     { path: '', component: FirstComponent },
     { path: 'second-component', component: SecondComponent },
     { path: 'speech-to-text', component: SpeechToTextComponent },
+    { path: 'wizard', component: WizardComponent },
     { path: 'contact', component: ContactComponent },
     { path: 'products', component: ProductsListComponent },
     { path: 'products/:id', component: ProductdetailsComponent },
