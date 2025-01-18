@@ -1,0 +1,34 @@
+@use '@angular/material' as mat;
+
+:root {
+    @include mat.stepper-overrides((header-icon-foreground-color: orange,
+            header-selected-state-icon-background-color: red,
+        ));
+}
+
+
+// *,
+// body,
+// html {
+   
+    
+
+// }
+
+// body {
+//     margin: 0 3rem;
+// }
+
+// .flex {
+//     display: flex;
+// }
+
+// html,
+// body {
+//     height: 100%;
+// }
+
+// body {
+//     margin: 0;
+// }
+

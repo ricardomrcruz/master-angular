@@ -1,6 +1,11 @@
+.bodyspeech{
+    font-family: Georgia;
+}
+
 .title {
     padding-top: 1.5rem;
     margin-left: 20px;
+    font-family: Georgia !important;
 }
 
 .flex {
@@ -24,7 +29,7 @@
 .upload-container {
     padding: 0 20px;
     width: 100%;
-
+    font-family: Georgia !important;
     margin: 0;
     font-size: small;
 }
@@ -251,8 +256,6 @@
 
 .typesafety {
     font-size: 0.8rem;
-
-
     padding: 0.2rem 0.4rem;
     font-weight: 700;
     background-color: hsl(0, 0%, 91%, 0.7);

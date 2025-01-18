@@ -1,8 +1,55 @@
-<div>
-    <h1>Wizard Test</h1>
-    <mat-horizontal-stepper>
-        <mat-step>
-            <h2>Step 1</h2>
+<div class="wizard-container">
+    <!-- wizard.component.html -->
+
+    <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+        {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+    </button>
+
+    <mat-stepper [linear]="isLinear" #stepper orientation="horizontal">
+        <mat-step [stepControl]="personalInfoForm">
+            <form [formGroup]="personalInfoForm">
+                <ng-template matStepLabel>Personal Information</ng-template>
+
+                <mat-form-field>
+                    <mat-label>First Name</mat-label>
+                    <input matInput formControlName="firstName" placeholder="Enter first name" required>
+                    <mat-error *ngIf="personalInfoForm.get('firstName')?.hasError('required')">
+                        First name is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Last Name</mat-label>
+                    <input matInput formControlName="lastName" placeholder="Enter last name" required>
+                    <mat-error *ngIf="personalInfoForm.get('lastName')?.hasError('required')">
+                        Last name is required
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field>
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" placeholder="Ex. pat@example.com" type="email" required>
+                    <mat-error *ngIf="personalInfoForm.get('email')?.hasError('required')">
+                        Email is required
+                    </mat-error>
+                    <mat-error *ngIf="personalInfoForm.get('email')?.hasError('email')">
+                        Please enter a valid email
+                    </mat-error>
+                </mat-form-field>
+
+                <div>
+                    <button mat-raised-button class="btn-next" matStepperNext (click)="savePersonalInfo()">Next</button>
+                </div>
+            </form>
         </mat-step>
-    </mat-horizontal-stepper>
+
+        <mat-step>
+            <ng-template matStepLabel>Done</ng-template>
+            <p>You are now done.</p>
+            <div>
+                <button mat-raised-button class="btn-back" matStepperPrevious>Back</button>
+                <button mat-raised-button class="btn-reset" (click)="stepper.reset()">Reset</button>
+            </div>
+        </mat-step>
+    </mat-stepper>
 </div>
