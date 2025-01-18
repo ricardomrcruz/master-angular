@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { StepperOrientation } from '@angular/material/stepper';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, zip } from 'rxjs';
 
 @Component({
   selector: 'app-wizard',
@@ -29,6 +29,7 @@ import { Observable } from 'rxjs';
 export class WizardComponent implements OnInit {
 
   personalInfoForm: FormGroup;
+  addressForm: FormGroup;
 
   isLinear = false;
 
@@ -39,6 +40,12 @@ export class WizardComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.minLength(2)]],
       lastName: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]]
+    })
+
+    this.addressForm = this.fb.group({
+      street: ['', [Validators.required]],
+      city: ['', [Validators.required]],
+      zipcode: ['', [Validators.required, Validators.pattern('^[0-9]{5}(?:-[0-9]{4})?$')]],
     })
   }
 
@@ -51,12 +58,26 @@ export class WizardComponent implements OnInit {
         email: data.email,
       });
     });
+
+    this.wizardService.getFormState().subscribe(data => {
+      this.addressForm.patchValue({
+        street: data.street,
+        city: data.city,
+        zipCode: data.zipcode,
+      });
+    })
   }
 
   // to save form data when clicking on next step
   savePersonalInfo(): void {
     if (this.personalInfoForm.valid) {
       this.wizardService.updateFormData(this.personalInfoForm.value);
+    }
+  }
+
+  saveAddressInfo(): void {
+    if (this.addressForm.valid) {
+      this.wizardService.updateFormData(this.addressForm.value)
     }
   }
 }
