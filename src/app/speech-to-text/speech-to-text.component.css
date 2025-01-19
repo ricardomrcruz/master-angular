@@ -56,8 +56,6 @@
     border: 2px dashed black;
     border-radius: 8px;
     cursor: pointer;
-
-
 }
 
 .upload-area:hover {
@@ -93,6 +91,8 @@
 
     height: 77vh;
     overflow-y: auto;
+
+    /* hiding the scrollbar */
     scrollbar-width: none;
     /* For Firefox */
     -ms-overflow-style: none;
@@ -111,15 +111,6 @@
     border-radius: 7px;
 }
 
-/* .helvetica {
-    font-family: Helvetica, "Helvetica Neue", Arial, sans-serif !important;
-} */
-
-
-
-/* .upload-container .transcript-area p {
-    font-family: Helvetica, "Helvetica Neue", Arial, sans-serif !important;
-} */
 
 .reader-wrapper {
     /* Fixed height container --- */
@@ -129,7 +120,6 @@
     border: 1px solid #ccc;
     margin-top: 4px;
     border-radius: 4px;
-
 }
 
 .scroll-container {
@@ -286,8 +276,6 @@
     height: 100%;
     transition: width 300ms ease-in-out;
 }
-
-
 
 
 /*--------------- ENTITY-------------- */
