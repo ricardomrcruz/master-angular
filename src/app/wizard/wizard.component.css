@@ -10,7 +10,7 @@
 mat-form-field {
     display: block;
     margin: 20px 0;
-    
+
 }
 
 /* // Add background color to form fields */
@@ -46,15 +46,41 @@ div button {
     background-color: #3f51b5 !important;
     color: white !important;
     border-radius: 3px;
-    margin-top: 0.5rem;
+    
 }
 
 .btn-back {
     background-color: #757575 !important;
     color: white !important;
+    border-radius: 3px;
 }
 
 .btn-reset {
     background-color: #f44336 !important;
     color: white !important;
+}
+
+.summary-card {
+    margin: 20px 0;
+    background-color: #f8f9fa;
+
+    mat-card-title {
+        color: #3f51b5;
+        font-size: 1.2rem;
+        margin-bottom: 16px;
+    }
+
+    mat-card-content {
+        padding: 16px;
+
+        p {
+            margin: 8px 0;
+            line-height: 1.5;
+
+            strong {
+                color: #555;
+                margin-right: 8px;
+            }
+        }
+    }
 }

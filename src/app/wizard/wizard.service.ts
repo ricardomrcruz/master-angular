@@ -8,7 +8,7 @@ export interface FormData {
   email: string;
   street: string;
   city: string;
-  zipcode: string;
+  zipCode: string;
   company: string;
   position: string;
   experience: number;
@@ -27,7 +27,7 @@ export class WizardService {
     email: '',
     street: '',
     city: '',
-    zipcode: '',
+    zipCode: '',
     company: '',
     position: '',
     experience: 0
@@ -55,7 +55,7 @@ export class WizardService {
       email: '',
       street: '',
       city: '',
-      zipcode: '',
+      zipCode: '',
       company: '',
       position: '',
       experience: 0

@@ -8,11 +8,9 @@ import {
 } from '@angular/core';
 import { AssemblyAI, TranscriptWord } from 'assemblyai';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
-
 interface Word extends TranscriptWord {
   highlighted?: boolean;
 }
-
 interface ContentSafety {
   summary: { [key: string]: number };
   severity_score_summary: { [key: string]: { [key: string]: number } };
@@ -22,7 +20,6 @@ interface ContentSafety {
     timestamp: { start: number; end: number };
   }>;
 }
-
 interface IabCategory {
   status: string;
   results: Array<{
@@ -39,7 +36,6 @@ interface IabCategory {
   summary: { [key: string]: number };
 }
 
-
 @Component({
   selector: 'app-speech-to-text',
   imports: [CommonModule, MatProgressBarModule],
@@ -48,15 +44,21 @@ interface IabCategory {
   standalone: true,
 })
 export class SpeechToTextComponent {
+
+  //api client and response property 
   private client: AssemblyAI | null = null;
   transcriptText: string | null | undefined = '';
 
   // property to store video
   videoUrl: string | null = null;
+
   isLoading: boolean = false;
-  words: Word[] = [];
   currentTime: number = 0;
 
+  //array for words transcribed
+  words: Word[] = [];
+
+  //other assemblyai params
   contentSafety: any = null;
   entities: any[] = [];
   chapters: any[] = [];
@@ -65,7 +67,7 @@ export class SpeechToTextComponent {
   iabCategories: IabCategory | null = null;
 
 
-
+  //api key as env dependency injection
   constructor(@Optional() @Inject('API_KEY') private apiKey?: string) {
     console.log('api key is :', this.apiKey);
     if (this.apiKey) {
@@ -95,10 +97,6 @@ export class SpeechToTextComponent {
           console.log('Upload completed at:', new Date().toISOString());
           console.log('Upload URL:', uploadURL);
 
-
-
-
-
           const data: any = {
             audio: uploadURL,
             speech_model: 'best',
@@ -110,7 +108,6 @@ export class SpeechToTextComponent {
           };
 
           console.log('Starting request at:', new Date().toISOString());
-
           console.log('Sending transcript request with config:', data);
           const transcript = await this.client.transcripts.transcribe(data);
           console.log('Response received at:', new Date().toISOString());
@@ -122,12 +119,11 @@ export class SpeechToTextComponent {
 
           if (transcript && transcript.words) {
             this.words = transcript.words;
+
             this.entities = transcript.entities || [];
-
             this.iabCategories = transcript.iab_categories_result || null;
-
-
             this.sentimentAnalysis = transcript.sentiment_analysis_results || [];
+
             this.contentSafety = {
               content_safety_labels: {
                 summary: transcript.content_safety_labels?.summary || {},
@@ -184,8 +180,6 @@ export class SpeechToTextComponent {
     }
     return isActive;
   }
-
-
 
   // ENTITIES
   getUniqueEntityTypes(): string[] {

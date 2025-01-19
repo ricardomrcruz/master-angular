@@ -45,7 +45,7 @@
 
         <mat-step [stepControl]="addressForm">
             <form [formGroup]="addressForm">
-                <ng-template matStepLabel>Personal Information</ng-template>
+                <ng-template matStepLabel>Address</ng-template>
 
                 <mat-form-field>
                     <mat-label>Street Address</mat-label>
@@ -75,16 +75,39 @@
                 </mat-form-field>
 
                 <div>
-                    <button mat-raised-button class="btn-next" matStepperNext (click)="savePersonalInfo()">Next</button>
+                    <button mat-raised-button class="btn-back" matStepperPrevious>Back</button>
+                    <button mat-raised-button class="btn-next" matStepperNext (click)="saveAddressInfo()">Next</button>
                 </div>
             </form>
         </mat-step>
 
         <mat-step>
-            <ng-template matStepLabel>Done</ng-template>
-            <p>You are now done.</p>
+            <ng-template matStepLabel>Review & Submit</ng-template>
+            <p>You are now done. Check your data and submit the form. Thank you.</p>
+
+            <mat-card class="summary-card">
+                <mat-card-header>
+                    <mat-card-title>Personal Information</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p><strong>Name:</strong>{{formData.firstName}} {{formData.lastName}}</p>
+                    <p><strong>Email:</strong>{{formData.email}}</p>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="summary-card">
+                <mat-card-header>
+                    <mat-card-title>Address Information</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <p><strong>Street:</strong>{{formData.street}}</p>
+                    <p><strong>City:</strong>{{formData.city}}</p>
+                    <p><strong>ZIP Code:</strong>{{formData.zipCode}}</p>
+                </mat-card-content>
+            </mat-card>
             <div>
                 <button mat-raised-button class="btn-back" matStepperPrevious>Back</button>
+                <button mat-raised-button class="btn-next" (click)="onSubmit()">Submit</button>
                 <button mat-raised-button class="btn-reset" (click)="stepper.reset()">Reset</button>
             </div>
         </mat-step>
